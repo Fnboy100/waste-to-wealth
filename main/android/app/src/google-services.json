@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "138890296176",
+    "project_id": "waste-to-wealth-de2bc",
+    "storage_bucket": "waste-to-wealth-de2bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138890296176:android:ada3682ae40aa281582db5",
+        "android_client_info": {
+          "package_name": "com.example.main"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYx8QsitOGtssJ2t2osZQdkad7Caar_T8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
