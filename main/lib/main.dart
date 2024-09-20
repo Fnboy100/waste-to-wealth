@@ -18,9 +18,37 @@ class MyApp
   Widget
       build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Google Maps',
+      title: 'waste to wealth',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme:ColorScheme.fromSeed(seedColor: const Color.fromRGBO(255, 255, 255, 0)),
+        useMaterial3: true,
+        textTheme: const TextTheme(
+          headlineSmall: TextStyle(
+            fontFamily: 'ArchivoBold',
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+          headlineLarge: TextStyle(
+            fontFamily: 'ArchivoBold',
+            fontSize: 32,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+          headlineMedium: TextStyle(
+            fontFamily: 'ArchivoBold',
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+          bodyMedium:TextStyle(
+            fontFamily: 'InterRegular',
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
+
+          ),
       ),
       //home:
     );
