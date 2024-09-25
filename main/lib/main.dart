@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main/globalclass/app_initializer.dart';
+import 'package:main/Hompage/homepage.dart';
 
 void
     main() async {
@@ -26,12 +27,14 @@ class MyApp
           headlineSmall: TextStyle(
             fontFamily: 'ArchivoBold',
             fontSize: 18,
+            height: 28 / 18,
             fontWeight: FontWeight.w700,
             color: Colors.black,
           ),
           headlineLarge: TextStyle(
             fontFamily: 'ArchivoBold',
             fontSize: 32,
+            height: 48/32,
             fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
@@ -50,7 +53,7 @@ class MyApp
 
           ),
       ),
-      //home:
+      home: const HomePage(),
     );
   }
 }
