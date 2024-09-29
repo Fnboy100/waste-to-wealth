@@ -55,7 +55,7 @@ class IconMenuBarScrollableState
       ),
       height: 100,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal, 
+        scrollDirection: Axis.horizontal,
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
           final item = menuItems[index];
@@ -63,6 +63,12 @@ class IconMenuBarScrollableState
             onTap: () {
               setState(() {
                 selectedItem = item["label"];
+                if (selectedItem == "Profile") {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    '/dashboard'
+                  );
+                }
               });
             },
             child: Padding(
@@ -73,21 +79,17 @@ class IconMenuBarScrollableState
                   Icon(
                     item["icon"],
                     size: 25.0,
-                    color: selectedItem == item["label"]
-                        ? const Color(0x565E6CFF)
-                        :Theme.of(context).colorScheme.onPrimaryFixedVariant,
+                    color: selectedItem == item["label"] ? const Color(0x565E6CFF) : Theme.of(context).colorScheme.onPrimaryFixedVariant,
                   ),
                   const SizedBox(height: 4.0),
                   Text(
                     item["label"],
                     style: TextStyle(
                       fontSize: 14.0,
-                      height: 14/10,
+                      height: 14 / 10,
                       fontFamily: 'InterRegular',
                       fontWeight: FontWeight.w600,
-                      color: selectedItem == item["label"]
-                          ? const Color(0x565E6CFF)
-                        :Theme.of(context).colorScheme.onPrimaryFixedVariant ,
+                      color: selectedItem == item["label"] ? const Color(0x565E6CFF) : Theme.of(context).colorScheme.onPrimaryFixedVariant,
                     ),
                   ),
                 ],

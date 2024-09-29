@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:main/Hompage/build_testimonial_cards.dart';
 import 'package:main/Hompage/faq_page.dart';
 import 'package:main/Hompage/icon_menubar_scrollable.dart';
@@ -17,15 +16,6 @@ class HomePage
 
 class HomePageState
     extends State<HomePage> {
-  final Location
-      _location =
-      Location();
-  bool
-      isLoading =
-      true;
-  bool
-      locationPermissionDenied =
-      false;
 
   final List<String>
       menuList =
@@ -63,85 +53,15 @@ class HomePageState
         IconMenuBarScrollable(key: widget.key);
     imageCarouselWithTimer =
         ImageCarouselWithTimer(key: widget.key);
-    _checkLocationPermissions();
   }
 
-  Future<void>
-      _checkLocationPermissions() async {
-    bool
-        serviceEnabled;
-    PermissionStatus
-        permissionGranted;
 
-    serviceEnabled =
-        await _location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await _location.requestService();
-      if (!serviceEnabled) {
-        _showError('Location services are disabled.');
-        setState(() {
-          locationPermissionDenied = true;
-        });
-        return;
-      }
-    }
-
-    permissionGranted =
-        await _location.hasPermission();
-    if (permissionGranted ==
-        PermissionStatus.denied) {
-      permissionGranted = await _location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        _showError('Location permissions are denied.');
-        setState(() {
-          locationPermissionDenied = true;
-        });
-        return;
-      }
-    }
-
-    _fetchUserLocation();
-  }
-
-  Future<void>
-      _fetchUserLocation() async {
-    try {
-      _location.changeSettings(accuracy: LocationAccuracy.high);
-      final currentLocation = await _location.getLocation();
-      print('Fetched location: ${currentLocation.latitude}, ${currentLocation.longitude}');
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      _showError('Error fetching location: $e');
-      setState(() {
-        locationPermissionDenied = true;
-      });
-    }
-  }
-
-  void _showError(
-      String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
 
   @override
   Widget
       build(BuildContext context) {
-    if (locationPermissionDenied) {
-      return Scaffold(
-        body: Center(
-          child: Text(
-            'Location permission is required to use this app.',
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
-      body: isLoading ? const Center(child: CircularProgressIndicator()) : _buildHomePageContent(context),
+      body: _buildHomePageContent(context),
     );
   }
 

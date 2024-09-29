@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.17.0
   logger: ^1.1.0
   flutter_rating_bar: ^4.0.0
+  flutter_secure_storage: ^9.0.0
+  table_calendar: ^3.0.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -72,6 +74,9 @@ flutter:
      - 'asset/images/waste_image_2.jpg'
      - 'asset/images/waste_image_3.jpg'
      - 'asset/images/waste_image_4.jpg'
+     - 'asset/images/waste_image_5.jpg'
+     - 'asset/images/no_Image_Placeholder.png'
+     - 'asset/images/logo.png'
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
