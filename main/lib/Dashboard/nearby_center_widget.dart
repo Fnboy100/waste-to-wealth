@@ -19,10 +19,10 @@ class NearbyCenterWidget
 
   @override
   State<NearbyCenterWidget> createState() =>
-      _NearbyCenterWidgetState();
+      NearbyCenterWidgetState();
 }
 
-class _NearbyCenterWidgetState
+class NearbyCenterWidgetState
     extends State<NearbyCenterWidget> {
   Future<List<dynamic>> fetchNearbyRecyclingCenters(
       double latitude,
@@ -48,6 +48,7 @@ class _NearbyCenterWidgetState
   @override
   Widget
       build(BuildContext context) {
+        print("NearbyCenterWidget: build called with latitude: ${widget.latitude}, longitude: ${widget.longitude}");
     return FutureBuilder<List<dynamic>>(
       future: fetchNearbyRecyclingCenters(widget.latitude, widget.longitude),
       builder: (context, snapshot) {

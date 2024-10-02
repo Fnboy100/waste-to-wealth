@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'
     as http;
@@ -27,6 +28,9 @@ class DashboardPageState
   late LocationAppInitializer
       locationAppInitializer;
 
+  late Future<LocationData?>
+      _location;
+
   List
       articles =
       [];
@@ -37,6 +41,8 @@ class DashboardPageState
     super.initState();
     locationAppInitializer =
         LocationAppInitializer();
+    _location =
+        compute(fetchLocationInBackground, locationAppInitializer);
   }
 
   Future<List<dynamic>>
@@ -47,7 +53,7 @@ class DashboardPageState
         'waste management';
     final url =
         'https://newsapi.org/v2/everything?q=$query&pageSize=50&apiKey=$wasteManagementApiKey';
-    print("wastemanagement key: $wasteManagementApiKey");
+    
     final response =
         await http.get(Uri.parse(url));
 
@@ -58,6 +64,11 @@ class DashboardPageState
     } else {
       return throw Exception('Failed to load news');
     }
+  }
+
+  Future<LocationData?>
+      fetchLocationInBackground(LocationAppInitializer locationAppInitializer) async {
+    return await locationAppInitializer.fetchUserLocation();
   }
 
   @override
@@ -82,36 +93,90 @@ class DashboardPageState
                 child: Column(
                   children: [
                     Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.9,
                       clipBehavior: Clip.hardEdge,
                       child: Stack(children: [
-                        Image.asset(
-                          'asset/images/waste_image_5.jpg',
-                          height: 150,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                        Positioned(
+                          left: 0.0,
+                          right: 0.0,
+                          top: 0.0,
+                          child: Image.asset(
+                            'asset/images/waste_image_5.jpg',
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        Center(
-                            child: Positioned.fill(
+                        Positioned(
+                          left: 110.0,
+                          right: 110.0,
                           child: Image.asset(
                             'asset/images/logo.png',
                             height: 150,
                             width: 150,
                             fit: BoxFit.cover,
                           ),
-                        )),
+                        ),
                       ]),
                     ),
                     const SizedBox(height: 16),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: SizedBox(
-                        width: 430.0,
+                        width: 550.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              height: 45.0,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/');
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateColor.resolveWith((states) {
+                                    if (states.contains(WidgetState.pressed)) {
+                                      return const Color(0xFF2C35E0);
+                                    } else if (states.contains(WidgetState.hovered)) {
+                                      return const Color(0xFF4850E4);
+                                    } else if (states.contains(WidgetState.disabled)) {
+                                      return Colors.grey.withOpacity(0.4);
+                                    }
+                                    return const Color(0xFF636AE8);
+                                  }),
+                                  foregroundColor: WidgetStateColor.resolveWith((states) {
+                                    if (states.contains(WidgetState.pressed)) {
+                                      return Colors.white;
+                                    } else if (states.contains(WidgetState.hovered)) {
+                                      return Colors.white;
+                                    } else if (states.contains(WidgetState.disabled)) {
+                                      return Colors.white.withOpacity(0.4);
+                                    }
+                                    return Colors.white;
+                                  }),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Icon(
+                                      Icons.home_outlined,
+                                      size: 15.0,
+                                      color: Colors.white,
+                                    ),
+                                    const SizedBox(width: 1.0),
+                                    Text(
+                                      'Home',
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.35,
                               height: 45.0,
@@ -263,7 +328,7 @@ class DashboardPageState
                   height: MediaQuery.of(context).size.height * 0.3,
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: FutureBuilder<LocationData?>(
-                    future: locationAppInitializer.fetchUserLocation(),
+                    future: _location,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

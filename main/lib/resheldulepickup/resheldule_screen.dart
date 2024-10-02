@@ -128,14 +128,10 @@ class RescheduleAppointmentScreenState
                   return const Color(0xFF636AE8);
                 })),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    '/dashboard'
-                  );
+                  Navigator.pushReplacementNamed(context, '/dashboard');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Reschedule confirmed!', style: Theme.of(context).textTheme.bodyMedium!.copyWith()), backgroundColor: Colors.white),
                   );
-          
                 },
                 child: Text(
                   'Confirm',
@@ -153,88 +149,92 @@ class RescheduleAppointmentScreenState
   Widget
       build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Reschedule Appointment',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-      body: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        height: MediaQuery.of(context).size.height * 0.9,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                DateFormat('MMMM yyyy').format(selectedDate),
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 16,
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.9,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10.0),
+              Center(
+                child: Text(
+                  'Reschedule Appointment',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  DateFormat('MMMM yyyy').format(selectedDate),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              CalendarDatePicker(
+                initialDate: selectedDate,
+                firstDate: DateTime.now(),
+                lastDate: DateTime.now().add(const Duration(days: 365)),
+                onDateChanged: (newDate) {
+                  setState(() {
+                    selectedDate = newDate;
+                  });
+                },
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                'Select Waste Type:',
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            CalendarDatePicker(
-              initialDate: selectedDate,
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 365)),
-              onDateChanged: (newDate) {
-                setState(() {
-                  selectedDate = newDate;
-                });
-              },
-            ),
-            const SizedBox(height: 20.0),
-            Text(
-              'Select Waste Type:',
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView(
-                children: wasteTypes.keys.map((String wasteType) {
-                  return CheckboxListTile(
-                    title: Text(wasteType),
-                    value: wasteTypes[wasteType],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        wasteTypes[wasteType] = value!;
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                ),
-                onPressed: () {
-                  selectedWasteTypes = getSelectedWasteTypes();
-                  if (selectedWasteTypes.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select at least one waste type.'),
-                      ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView(
+                  children: wasteTypes.keys.map((String wasteType) {
+                    return CheckboxListTile(
+                      title: Text(wasteType),
+                      value: wasteTypes[wasteType],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          wasteTypes[wasteType] = value!;
+                        });
+                      },
                     );
-                  } else {
-                    _showConfirmationDialog(context);
-                  }
-                },
-                child: Text(
-                  'Confirm Reschedule',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  }).toList(),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                  ),
+                  onPressed: () {
+                    selectedWasteTypes = getSelectedWasteTypes();
+                    if (selectedWasteTypes.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select at least one waste type.'),
+                        ),
+                      );
+                    } else {
+                      _showConfirmationDialog(context);
+                    }
+                  },
+                  child: Text(
+                    'Confirm Reschedule',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
